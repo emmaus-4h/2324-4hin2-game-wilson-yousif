@@ -56,7 +56,7 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-  // achtergrond
+  background(0,0,0);
 
   // vijand
 
