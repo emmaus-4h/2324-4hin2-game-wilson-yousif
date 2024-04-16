@@ -10,6 +10,9 @@
  * instellingen om foutcontrole van je code beter te maken 
  */
 ///<reference path="p5.global-mode.d.ts" />
+///<reference path="p5.d.ts" />
+let bg;
+let y = 0;
 "use strict"
 const KEY_SPACE = 32;
 
@@ -30,12 +33,17 @@ var springsnelheid = 2;
 var springsnelheidstart = 4;
 var zwaartekracht = 0.5;
 
-
-
 var health = 100;  // health van speler
 
+var kogelX = spelerX;
+var kogelY = spelerY;
+var kogelVliegt = false;
 
 
+
+
+
+  
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
 /* ********************************************* */
@@ -46,18 +54,19 @@ var health = 100;  // health van speler
 var beweegAlles = function() {
   // speler
   if (keyIsDown(68)){
-spelerX = spelerX + 1;
+spelerX = spelerX + 3;
+    
   }
  if (keyIsDown(65)){
-spelerX = spelerX - 1;
+spelerX = spelerX - 3;
    
  }
 if (keyIsDown(87)){
-  spelerY = spelerY - 1;
+  spelerY = spelerY - 3;
   
 }
 if (keyIsDown(83)){
-  spelerY = spelerY + 1;
+  spelerY = spelerY + 3;
 }
 
 
@@ -67,6 +76,22 @@ if (keyIsDown(83)){
   // vijand
 
   // kogel
+  loop()
+  if (kogelVliegt === false && keyIsDown(74)) {
+    kogelVliegt = true
+    kogelX=spelerX;
+    kogelY = spelerY;
+  }
+  if (kogelVliegt === true){
+kogelX = kogelX - 5;
+  }
+if (kogelVliegt === true && 
+    kogelY < 10){
+  kogelVliegt = false;
+    }
+
+
+  
 };
 
 /**
@@ -87,15 +112,20 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-
   
   //achtergrond
-  fill("green");
-  rect(0,0,1280,720);
+  background(bg);
   
   // vijand
 
   // kogel
+  fill ("yellow");
+  ellipse (kogelX,kogelY,20,20);
+
+
+
+
+  
 
   // speler
   fill("white");
@@ -117,11 +147,12 @@ var tekenAlles = function() {
  * de p5 library, zodra het spel geladen is in de browser
  */
 function setup() {
+   bg = loadImage('City2_pale.png');
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
 
   // Kleur de achtergrond blauw, zodat je het kunt zien
-  background('blue');
+  // background('blue');
 }
 
 /**
@@ -130,6 +161,7 @@ function setup() {
  * uitgevoerd door de p5 library, nadat de setup functie klaar is
  */
 function draw() {
+  //bg=loadImage('City2_pale.png');
   if (spelStatus === SPELEN) {
     beweegAlles();
     verwerkBotsing();
@@ -141,4 +173,5 @@ function draw() {
   if (spelStatus === GAMEOVER) {
     // teken game-over scherm
   }
+  
 }
