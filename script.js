@@ -70,8 +70,6 @@ if (keyIsDown(83)){
 }
 
 
-  
-  
 
   // vijand
 
@@ -121,8 +119,6 @@ var tekenAlles = function() {
   // kogel
   fill ("yellow");
   ellipse (kogelX,kogelY,20,20);
-
-
 
 
   
