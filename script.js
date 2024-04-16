@@ -11,7 +11,9 @@
  */
 ///<reference path="p5.global-mode.d.ts" />
 "use strict"
+const KEY_SPACE = 32;
 
+var aantal = 0;
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
 /* ********************************************* */
@@ -19,9 +21,20 @@ const SPELEN = 1;
 const GAMEOVER = 2;
 var spelStatus = SPELEN;
 
+var floorY = 650;
+
 var spelerX = 600; // x-positie van speler
-var spelerY = 600; // y-positie van speler
+var spelerY = floorY; // y-positie van speler
+var spelerspringt = false;
+var springsnelheid = 2;
+var springsnelheidstart = 4;
+var zwaartekracht = 0.5;
+
+
+
 var health = 100;  // health van speler
+
+
 
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
@@ -32,6 +45,24 @@ var health = 100;  // health van speler
  */
 var beweegAlles = function() {
   // speler
+  if (keyIsDown(68)){
+spelerX = spelerX + 1;
+  }
+ if (keyIsDown(65)){
+spelerX = spelerX - 1;
+   
+ }
+if (keyIsDown(87)){
+  spelerY = spelerY - 1;
+  
+}
+if (keyIsDown(83)){
+  spelerY = spelerY + 1;
+}
+
+
+  
+  
 
   // vijand
 
@@ -56,8 +87,12 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-  background(0,0,0);
 
+  
+  //achtergrond
+  fill("green");
+  rect(0,0,1280,720);
+  
   // vijand
 
   // kogel
