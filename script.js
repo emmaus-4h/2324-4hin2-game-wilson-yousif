@@ -11,8 +11,8 @@
  */
 ///<reference path="p5.global-mode.d.ts" />
 ///<reference path="p5.d.ts" />
-let bg;
-let y = 0;
+var bg= 0;
+var y = 0;
 "use strict"
 const KEY_SPACE = 32;
 
@@ -29,14 +29,16 @@ var floorY = 650;
 var spelerX = 600; // x-positie van speler
 var spelerY = floorY; // y-positie van speler
 var spelerspringt = false;
+var vijand=600;
+var vijandY=floorY;
 var springsnelheid = 2;
 var springsnelheidstart = 4;
 var zwaartekracht = 0.5;
 
 var health = 100;  // health van speler
 
-var kogelX = spelerX;
-var kogelY = spelerY;
+var kogelX = 10000;
+var kogelY = 10000;
 var kogelVliegt = false;
 
 
@@ -55,16 +57,18 @@ var beweegAlles = function() {
   // speler
   if (keyIsDown(68)){
 spelerX = spelerX + 3;
-    
   }
+  
  if (keyIsDown(65)){
 spelerX = spelerX - 3;
    
  }
+  
 if (keyIsDown(87)){
   spelerY = spelerY - 3;
   
 }
+  
 if (keyIsDown(83)){
   spelerY = spelerY + 3;
 }
@@ -72,22 +76,28 @@ if (keyIsDown(83)){
 
 
   // vijand
+  vijand = vijand - 1;
+  //if (vijand < 0) spelerX=0;
+ vijandY = floorY;
+
 
   // kogel
-  loop()
+  
   if (kogelVliegt === false && keyIsDown(74)) {
     kogelVliegt = true
-    kogelX=spelerX;
+    kogelX= spelerX;
     kogelY = spelerY;
   }
-  if (kogelVliegt === true){
+  if (kogelVliegt === true ){
 kogelX = kogelX - 5;
   }
+  
 if (kogelVliegt === true && 
-    kogelY < 10){
+    kogelY < 0){
   kogelVliegt = false;
     }
 
+ 
 
   
 };
@@ -98,7 +108,9 @@ if (kogelVliegt === true &&
  * Updatet globale variabelen punten en health
  */
 var verwerkBotsing = function() {
+  
   // botsing speler tegen vijand
+  //if (vijand < spelerX && vijand + 50 > spelerX && vijandY < spelerY && vijandY + 50 > spelerY);
 
   // botsing kogel tegen vijand
 
@@ -115,6 +127,11 @@ var tekenAlles = function() {
   background(bg);
   
   // vijand
+  fill("red");
+  rect(vijand, vijandY, 50, 50);
+  vijand = vijand - 1;
+  if (vijand < 0)
+    
 
   // kogel
   fill ("yellow");
