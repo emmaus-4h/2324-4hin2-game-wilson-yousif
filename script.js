@@ -281,12 +281,18 @@ function draw() {
     fill("white");
     text("GAME OVER Play Again spatie", 500, 300);
     if(keyIsDown(32)){// spatiebalk}
-      spelStatus=spelen;
+      spelStatus=UITLEG;
+      
     
   }
   if (spelStatus === UITLEG) {
     // teken UITLEG SCHERM scherm
      console.log("uitleg");
+    textSize(50);
+    fill("white");
+    text("HAAL ZOVEEL PUNTEN MOGELIJK", 500, 300);
+    spelerX=50;
+    spelStatus = SPELEN;
 
   }
   
