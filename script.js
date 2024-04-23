@@ -13,29 +13,73 @@
 ///<reference path="p5.d.ts" />
 var bg= 0;
 var y = 0;
+var c1=0;
+var y=0;
 "use strict"
 const KEY_SPACE = 32;
 
 var aantal = 0;
+var score = 0;
+var highscore = 0;
+var x = 0;
+var y = 0;
+var checkGameOver = 0;
+
+
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
 /* ********************************************* */
 const SPELEN = 1;
+
+
 const GAMEOVER = 2;
+
+
 var spelStatus = SPELEN;
+var UITLEG=0;
+
+
+
 
 var floorY = 650;
+
+var playerX = 50;
+var playerY = 50;
+var playerWidth = 40;
+var playerHeight = 60;
+var playerSpeed = 5;
+
+var playerImg;
+
+
+var vijandX = 20;
+var vijandY = 70;
+var vijandWidth = 40;
+var vijandHeight = 60;
+var vijandSpeed = 5;
+var VijandLeven = true
+
+
 
 var spelerX = 600; // x-positie van speler
 var spelerY = floorY; // y-positie van speler
 var spelerspringt = false;
-var vijand=600;
-var vijandY=floorY;
+
+
+var vijandY = floorY ;
+var vijandX = 1400 ;
+
+
+var vijandspringt=false;
+
 var springsnelheid = 2;
+var vijandsnelheid = 2;
+var score = 0;
 var springsnelheidstart = 4;
 var zwaartekracht = 0.5;
 
 var health = 100;  // health van speler
+var vijandhealth = 10; // vijand health
 
 var kogelX = 10000;
 var kogelY = 10000;
@@ -76,10 +120,14 @@ if (keyIsDown(83)){
 
 
   // vijand
-  vijand = vijand - 1;
-  //if (vijand < 0) spelerX=0;
- vijandY = floorY;
+if (vijandLeven === true && vijandX < 0){
+  vijandLeven = false;
 
+}
+  
+
+  
+  
 
   // kogel
   
@@ -89,11 +137,11 @@ if (keyIsDown(83)){
     kogelY = spelerY;
   }
   if (kogelVliegt === true ){
-kogelX = kogelX - 5;
+kogelX = kogelX - 10;
   }
-  
+
 if (kogelVliegt === true && 
-    kogelY < 0){
+    kogelX < 1300) {
   kogelVliegt = false;
     }
 
@@ -109,13 +157,29 @@ if (kogelVliegt === true &&
  */
 var verwerkBotsing = function() {
   
-  // botsing speler tegen vijand
-  //if (vijand < spelerX && vijand + 50 > spelerX && vijandY < spelerY && vijandY + 50 > spelerY);
+   //botsing speler tegen vijand
+  if (spelerX - vijandX < 50 &&
+     spelerX - vijandX >-50 &&
+     spelerY - vijandY <50 &&
+     spelerY - vijandY > -50) {
+    health = health - 10;
+    console.log("botsing"+ aantal)
+    
+  }
+  
+  
 
   // botsing kogel tegen vijand
+if ( kogelX - vijandX < 50 &&
+       kogelX -  vijandX > -50  &&
+       kogelY - vijandY < 50 &&
+       kogelY - vijandY > -50){
+  vijandhealth = vijandhealth - 5;
+       }
 
-  // update punten en health
+ 
 
+  
 };
 
 /**
@@ -128,9 +192,12 @@ var tekenAlles = function() {
   
   // vijand
   fill("red");
-  rect(vijand, vijandY, 50, 50);
-  vijand = vijand - 1;
-  if (vijand < 0)
+  rect(vijandX,   vijandY, 50, 50);
+  vijandX = vijandX - 2;
+  if (vijandX < 0)
+
+    
+    
     
 
   // kogel
@@ -148,7 +215,22 @@ var tekenAlles = function() {
 
   // punten en health
 
+return false;
 };
+var checkGameOver= function(){
+
+  if (spelerX - vijandX < 50 &&
+     spelerX - vijandX >-50 &&
+     spelerY - vijandY <50 &&
+     spelerY - vijandY > -50) {
+    health = health - 10;
+    console.log("botsing"+ aantal)
+    return true;
+  }
+
+
+  return false;
+}
 
 /* ********************************************* */
 /* setup() en draw() functies / hoofdprogramma   */
@@ -161,8 +243,10 @@ var tekenAlles = function() {
  */
 function setup() {
    bg = loadImage('City2_pale.png');
+  
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
+
 
   // Kleur de achtergrond blauw, zodat je het kunt zien
   // background('blue');
@@ -180,11 +264,30 @@ function draw() {
     verwerkBotsing();
     tekenAlles();
     if (health <= 0) {
-      spelStatus = GAMEOVER;
+      if (checkGameOver){
+        spelStatus = GAMEOVER;
+        
+      }
+      
+      
     }
+     console.log("spelen");
   }
   if (spelStatus === GAMEOVER) {
+    
     // teken game-over scherm
+    console.log("game over");
+    textSize(50);
+    fill("white");
+    text("GAME OVER Play Again spatie", 500, 300);
+    if(keyIsDown(32)){// spatiebalk}
+      spelStatus=spelen;
+    
+  }
+  if (spelStatus === UITLEG) {
+    // teken UITLEG SCHERM scherm
+     console.log("uitleg");
+
   }
   
 }
