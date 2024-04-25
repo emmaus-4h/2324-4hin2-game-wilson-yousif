@@ -11,10 +11,10 @@
  */
 ///<reference path="p5.global-mode.d.ts" />
 ///<reference path="p5.d.ts" />
-var bg= 0;
+var bg = 0;
 var y = 0;
-var c1=0;
-var y=0;
+var c1 = 0;
+var y = 0;
 "use strict"
 const KEY_SPACE = 32;
 
@@ -24,7 +24,7 @@ var highscore = 0;
 var x = 0;
 var y = 0;
 var checkGameOver = 0;
-
+var spelStatus = UITLEG;
 
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
@@ -35,8 +35,8 @@ const SPELEN = 1;
 const GAMEOVER = 2;
 
 
-var spelStatus = SPELEN;
-var UITLEG=0;
+//var spelStatus = SPELEN;
+var UITLEG = 0;
 
 
 
@@ -66,11 +66,11 @@ var spelerY = floorY; // y-positie van speler
 var spelerspringt = false;
 
 
-var vijandY = floorY ;
-var vijandX = 1400 ;
+var vijandY = floorY;
+var vijandX = 1400;
 
 
-var vijandspringt=false;
+var vijandspringt = false;
 
 var springsnelheid = 2;
 var vijandsnelheid = 2;
@@ -89,7 +89,7 @@ var kogelVliegt = false;
 
 
 
-  
+
 /* ********************************************* */
 /* functies die je gebruikt in je game           */
 /* ********************************************* */
@@ -99,55 +99,64 @@ var kogelVliegt = false;
  */
 var beweegAlles = function() {
   // speler
-  if (keyIsDown(68)){
-spelerX = spelerX + 3;
+  if (keyIsDown(68)) {
+    spelerX = spelerX + 3;
   }
-  
- if (keyIsDown(65)){
-spelerX = spelerX - 3;
-   
- }
-  
-if (keyIsDown(87)){
-  spelerY = spelerY - 3;
-  
-}
-  
-if (keyIsDown(83)){
-  spelerY = spelerY + 3;
-}
+
+  if (keyIsDown(65)) {
+    spelerX = spelerX - 3;
+
+  }
+
+  if (keyIsDown(87)) {
+    spelerY = spelerY - 3;
+
+  }
+
+  if (keyIsDown(83)) {
+    spelerY = spelerY + 3;
+  }
 
 
 
   // vijand
-if (vijandLeven === true && vijandX < 0){
-  vijandLeven = false;
+  if (VijandLeven === true && vijandX < 0) {
+    VijandLeven = false;
 
-}
-  
+  }
 
-  
-  
+  if (vijandhealth = 0) {
+    VijandLeven = false;
+  }
+
+  if (VijandLeven === false && vijandX < 0) {
+    vijandX = 1400;
+  }
+  if (vijandX === 1400) {
+    VijandLeven = true;
+  }
+
+
 
   // kogel
-  
+
   if (kogelVliegt === false && keyIsDown(74)) {
     kogelVliegt = true
-    kogelX= spelerX;
+    kogelX = spelerX;
     kogelY = spelerY;
   }
-  if (kogelVliegt === true ){
-kogelX = kogelX - 10;
+  if (kogelVliegt === true) {
+    kogelX = kogelX + 5;
   }
 
-if (kogelVliegt === true && 
-    kogelX < 1300) {
-  kogelVliegt = false;
-    }
+  if (kogelVliegt === true &&
+    kogelX > 1300) {
+    kogelVliegt = false;
+  }
 
- 
 
-  
+
+
 };
 
 /**
@@ -156,56 +165,64 @@ if (kogelVliegt === true &&
  * Updatet globale variabelen punten en health
  */
 var verwerkBotsing = function() {
-  
-   //botsing speler tegen vijand
+
+  //botsing speler tegen vijand
   if (spelerX - vijandX < 50 &&
-     spelerX - vijandX >-50 &&
-     spelerY - vijandY <50 &&
-     spelerY - vijandY > -50) {
-    health = health - 10;
-    console.log("botsing"+ aantal)
-    
+    spelerX - vijandX > -50 &&
+    spelerY - vijandY < 50 &&
+    spelerY - vijandY > -50) {
+    health = health - 100;
+    console.log("botsing" + aantal)
+
   }
-  
-  
+  if (health = 0)
 
-  // botsing kogel tegen vijand
-if ( kogelX - vijandX < 50 &&
-       kogelX -  vijandX > -50  &&
-       kogelY - vijandY < 50 &&
-       kogelY - vijandY > -50){
-  vijandhealth = vijandhealth - 5;
-       }
 
- 
 
-  
+    // botsing kogel tegen vijand
+
+    if (kogelX - vijandX < 50 &&
+      kogelX - vijandX > -50 &&
+      kogelY - vijandY < 50 &&
+      kogelY - vijandY > -50) {
+      vijandhealth = vijandhealth - 10;
+    }
+
+
+
+
+
+
+
+
+
 };
 
 /**
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-  
+
   //achtergrond
   background(bg);
-  
+
+
+
+
   // vijand
   fill("red");
-  rect(vijandX,   vijandY, 50, 50);
-  vijandX = vijandX - 2;
-  if (vijandX < 0)
+  rect(vijandX, vijandY, 50, 50);
+  vijandX = vijandX - 3;
 
-    
-    
-    
+
+
 
   // kogel
-  fill ("yellow");
-  ellipse (kogelX,kogelY,20,20);
+  fill("yellow");
+  ellipse(kogelX, kogelY, 20, 20);
 
 
-  
+
 
   // speler
   fill("white");
@@ -215,16 +232,16 @@ var tekenAlles = function() {
 
   // punten en health
 
-return false;
+  return false;
 };
-var checkGameOver= function(){
+var checkGameOver = function() {
 
   if (spelerX - vijandX < 50 &&
-     spelerX - vijandX >-50 &&
-     spelerY - vijandY <50 &&
-     spelerY - vijandY > -50) {
+    spelerX - vijandX > -50 &&
+    spelerY - vijandY < 50 &&
+    spelerY - vijandY > -50) {
     health = health - 10;
-    console.log("botsing"+ aantal)
+    console.log("botsing" + aantal)
     return true;
   }
 
@@ -242,8 +259,8 @@ var checkGameOver= function(){
  * de p5 library, zodra het spel geladen is in de browser
  */
 function setup() {
-   bg = loadImage('City2_pale.png');
-  
+  bg = loadImage('City2_pale.png');
+
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
 
@@ -264,36 +281,42 @@ function draw() {
     verwerkBotsing();
     tekenAlles();
     if (health <= 0) {
-      if (checkGameOver){
+      if (checkGameOver) {
         spelStatus = GAMEOVER;
-        
+
       }
-      
-      
+
+
     }
-     console.log("spelen");
+    console.log("spelen");
   }
   if (spelStatus === GAMEOVER) {
-    
+
     // teken game-over scherm
     console.log("game over");
     textSize(50);
     fill("white");
     text("GAME OVER Play Again spatie", 500, 300);
-    if(keyIsDown(32)){// spatiebalk}
-      spelStatus=UITLEG;
-      
-    
-  }
-  if (spelStatus === UITLEG) {
-    // teken UITLEG SCHERM scherm
-     console.log("uitleg");
-    textSize(50);
-    fill("white");
-    text("HAAL ZOVEEL PUNTEN MOGELIJK", 500, 300);
-    spelerX=50;
-    spelStatus = SPELEN;
+    if (keyIsDown(32)) {// spatiebalk}
+      spelStatus = UITLEG;
 
+
+    }
+    if (spelStatus === UITLEG) {
+      // teken UITLEG SCHERM scherm
+      console.log("uitleg");
+      textSize(50);
+      fill("white");
+      rect(0, 0, 1280, 720);
+      bg=loadImage('City2_pale.png'); 
+      text("HAAL ZOVEEL PUNTEN MOGELIJK", 500, 300);
+      spelerX = 50;
+      spelStatus = SPELEN;
+      if (keyIsDown(13)) {
+        spelerX = 50;
+        spelStatus = SPELEN;
+      }
+
+    }
   }
-  
 }
