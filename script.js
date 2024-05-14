@@ -12,11 +12,9 @@
 ///<reference path="p5.global-mode.d.ts" />
 ///<reference path="p5.d.ts" />
 var bg = 0;
-var y = 0;
-var c1 = 0;
-var y = 0;
+
 "use strict"
-const KEY_SPACE = 32;
+
 
 var aantal = 0;
 var score = 0;
@@ -24,7 +22,7 @@ var highscore = 0;
 var x = 0;
 var y = 0;
 var checkGameOver = 0;
-var spelStatus = UITLEG;
+
 
 /* ********************************************* */
 /* globale variabelen die je gebruikt in je game */
@@ -34,9 +32,9 @@ const SPELEN = 1;
 
 const GAMEOVER = 2;
 
+const UITLEG = 3;
+var spelStatus = SPELEN;
 
-//var spelStatus = SPELEN;
-var UITLEG = 0;
 
 
 
@@ -168,9 +166,9 @@ var verwerkBotsing = function() {
 
   //botsing speler tegen vijand
   if (spelerX - vijandX < 50 &&
-    spelerX - vijandX > -50 &&
+    vijandX - spelerX < 50 &&
     spelerY - vijandY < 50 &&
-    spelerY - vijandY > -50) {
+    vijandY - spelerY < 50) {
     health = health - 100;
     console.log("botsing" + aantal)
 
@@ -237,17 +235,17 @@ var tekenAlles = function() {
 var checkGameOver = function() {
 
   if (spelerX - vijandX < 50 &&
-    spelerX - vijandX > -50 &&
+    vijandX - spelerX < 50 &&
     spelerY - vijandY < 50 &&
-    spelerY - vijandY > -50) {
-    health = health - 10;
+    vijandY - spelerY < 50) {
+    aantal = aantal + 1 ;
     console.log("botsing" + aantal)
     return true;
   }
 
 
   return false;
-}
+};
 
 /* ********************************************* */
 /* setup() en draw() functies / hoofdprogramma   */
@@ -281,42 +279,33 @@ function draw() {
     verwerkBotsing();
     tekenAlles();
     if (health <= 0) {
-      if (checkGameOver) {
+      if (checkGameOver()) {
         spelStatus = GAMEOVER;
 
       }
-
-
-    }
     console.log("spelen");
   }
+  
   if (spelStatus === GAMEOVER) {
 
     // teken game-over scherm
     console.log("game over");
     textSize(50);
     fill("white");
-    text("GAME OVER Play Again spatie", 500, 300);
-    if (keyIsDown(32)) {// spatiebalk}
-      spelStatus = UITLEG;
-
-
+    text("GAME OVER, druk spatie voor start", 400, 400);
+    if (keyIsDown(32)) { //spatie
+      spelStatus = SPELEN;
+      
+      
     }
+  }
     if (spelStatus === UITLEG) {
       // teken UITLEG SCHERM scherm
       console.log("uitleg");
-      textSize(50);
-      fill("white");
-      rect(0, 0, 1280, 720);
-      bg=loadImage('City2_pale.png'); 
-      text("HAAL ZOVEEL PUNTEN MOGELIJK", 500, 300);
-      spelerX = 50;
-      spelStatus = SPELEN;
-      if (keyIsDown(13)) {
-        spelerX = 50;
-        spelStatus = SPELEN;
-      }
-
     }
+      
+
+    
   }
 }
+     
