@@ -33,22 +33,13 @@ const SPELEN = 1;
 const GAMEOVER = 2;
 
 const UITLEG = 3;
-var spelStatus = SPELEN;
+var spelStatus = UITLEG;
 
 
 
 
 
 var floorY = 650;
-
-var playerX = 50;
-var playerY = 50;
-var playerWidth = 40;
-var playerHeight = 60;
-var playerSpeed = 5;
-
-var playerImg;
-
 
 var vijandX = 20;
 var vijandY = 70;
@@ -66,6 +57,7 @@ var spelerspringt = false;
 
 var vijandY = floorY;
 var vijandX = 1400;
+var vijandSpawn = vijandX
 
 
 var vijandspringt = false;
@@ -77,7 +69,7 @@ var springsnelheidstart = 4;
 var zwaartekracht = 0.5;
 
 var health = 100;  // health van speler
-var vijandhealth = 10; // vijand health
+var vijandhealth = 1; // vijand health
 
 var kogelX = 10000;
 var kogelY = 10000;
@@ -120,9 +112,10 @@ var beweegAlles = function() {
   // vijand
   if (VijandLeven === true && vijandX < 0) {
     VijandLeven = false;
+    
 
   }
-
+  //if (VijandLeven === false)
   if (vijandhealth = 0) {
     VijandLeven = false;
   }
@@ -133,7 +126,14 @@ var beweegAlles = function() {
   if (vijandX === 1400) {
     VijandLeven = true;
   }
+  if (vijandX === kogelVliegt){
 
+    vijandhealth = vijandhealth - 1;
+    vijandX=1400
+    
+  }
+    
+//if ( vijandhealth)
 
 
   // kogel
@@ -152,6 +152,20 @@ var beweegAlles = function() {
     kogelVliegt = false;
   }
 
+if (kogelVliegt === true && vijandX < kogelX + 50 ){
+  if (vijandY < kogelY + 50)
+    
+  vijandhealth = vijandhealth - 1;}
+
+  if (kogelVliegt - vijandX < 26 &&
+    vijandX - kogelVliegt < 26 &&
+    kogelVliegt - vijandY < 26 &&
+    vijandY - kogelVliegt < 26) {
+    health = health - 100;
+    console.log("botsing" + aantal)
+
+  }
+  
 
 
 
@@ -165,27 +179,32 @@ var beweegAlles = function() {
 var verwerkBotsing = function() {
 
   //botsing speler tegen vijand
-  if (spelerX - vijandX < 50 &&
-    vijandX - spelerX < 50 &&
-    spelerY - vijandY < 50 &&
-    vijandY - spelerY < 50) {
+  if (spelerX - vijandX < 26 &&
+    vijandX - spelerX < 26 &&
+    spelerY - vijandY < 26 &&
+    vijandY - spelerY < 26) {
     health = health - 100;
     console.log("botsing" + aantal)
 
   }
-  if (health = 0)
+  return false;
+  
 
 
 
     // botsing kogel tegen vijand
 
-    if (kogelX - vijandX < 50 &&
-      kogelX - vijandX > -50 &&
-      kogelY - vijandY < 50 &&
-      kogelY - vijandY > -50) {
-      vijandhealth = vijandhealth - 10;
+    if (kogelVliegt=== true &&
+        kogelX === vijandX &&
+        kogelY === vijandY){
+      kogelVliegt = false;
     }
-
+        //kogelX - vijandX < 50 &&
+      //vijandX - kogelX < 50 &&
+      //kogelY - vijandY < 50 &&
+      //vijandY - kogelY < 50) {
+      //kogelVliegt = false;
+    
 
 
 
@@ -222,6 +241,7 @@ var tekenAlles = function() {
 
 
 
+
   // speler
   fill("white");
   rect(spelerX - 25, spelerY - 25, 50, 50);
@@ -234,10 +254,10 @@ var tekenAlles = function() {
 };
 var checkGameOver = function() {
 
-  if (spelerX - vijandX < 50 &&
-    vijandX - spelerX < 50 &&
-    spelerY - vijandY < 50 &&
-    vijandY - spelerY < 50) {
+  if (spelerX - vijandX < 52 &&
+    vijandX - spelerX < 26 &&
+    spelerY - vijandY < 52 &&
+    vijandY - spelerY < 26) {
     aantal = aantal + 1 ;
     console.log("botsing" + aantal)
     return true;
@@ -275,10 +295,10 @@ function setup() {
 function draw() {
   //bg=loadImage('City2_pale.png');
   if (spelStatus === SPELEN) {
-    beweegAlles();
-    verwerkBotsing();
+    beweegAlles( );
+    verwerkBotsing(  );
     tekenAlles();
-    if (health <= 0) {
+   
       if (checkGameOver()) {
         spelStatus = GAMEOVER;
 
@@ -294,18 +314,33 @@ function draw() {
     fill("white");
     text("GAME OVER, druk spatie voor start", 400, 400);
     if (keyIsDown(32)) { //spatie
-      spelStatus = SPELEN;
+      spelerX = 600;
+      vijandX = vijandSpawn;
+      spelStatus = UITLEG;
       
       
     }
+    
   }
     if (spelStatus === UITLEG) {
       // teken UITLEG SCHERM scherm
       console.log("uitleg");
+      textSize(50);
+      fill("black");
+      rect( 0,0,1280,720);
+      fill("red");
+      text("Death to all, klik op enter", 400, 400);
+      if (keyIsDown(13)){
+        spelerX = 600;
+        vijandX = vijandSpawn;
+        spelStatus = SPELEN;
+      }
+      
+      
     }
       
 
     
   }
-}
+
      
