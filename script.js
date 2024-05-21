@@ -15,6 +15,7 @@ var bg = 0;
 
 "use strict"
 
+const KEY_SPACE = 32;
 
 var aantal = 0;
 var score = 0;
@@ -22,6 +23,17 @@ var highscore = 0;
 var x = 0;
 var y = 0;
 var checkGameOver = 0;
+//var vijandspanX = 0;
+var vijandspawn=10
+
+var vijandsnelheidstart = 10;
+
+var drawAnemy = true;
+
+
+
+
+
 
 
 /* ********************************************* */
@@ -52,8 +64,11 @@ var VijandLeven = true
 
 var spelerX = 600; // x-positie van speler
 var spelerY = floorY; // y-positie van speler
-var spelerspringt = false;
 
+var spelerSpringt = false;
+var springSnelheid = 0;
+var springSnelheidStart = 4;
+var zwaartekracht = 0.2;
 
 var vijandY = floorY;
 var vijandX = 1400;
@@ -62,15 +77,16 @@ var vijandSpawn = vijandX
 
 var vijandspringt = false;
 
-var springsnelheid = 2;
+
 var vijandsnelheid = 2;
 var score = 0;
-var springsnelheidstart = 4;
-var zwaartekracht = 0.5;
+
+
 
 var health = 100;  // health van speler
 var vijandhealth = 1; // vijand health
 
+var kogelPlek = kogelX && kogelY;
 var kogelX = 10000;
 var kogelY = 10000;
 var kogelVliegt = false;
@@ -98,24 +114,29 @@ var beweegAlles = function() {
 
   }
 
-  if (keyIsDown(87)) {
-    spelerY = spelerY - 3;
+  
 
+  if (spelerSpringt === false && keyIsDown(KEY_SPACE)) {
+    spelerSpringt = true;
+    springSnelheid = springSnelheidStart;
+  }
+  if (spelerSpringt === true){
+    spelerY = spelerY - springSnelheid;
+    springSnelheid = springSnelheid - zwaartekracht;
   }
 
-  if (keyIsDown(83)) {
-    spelerY = spelerY + 3;
-  }
+  if (spelerY > floorY){
+    spelerSpringt = false;
+}
+    
 
 
 
   // vijand
   if (VijandLeven === true && vijandX < 0) {
     VijandLeven = false;
-    
-
   }
-  //if (VijandLeven === false)
+  
   if (vijandhealth = 0) {
     VijandLeven = false;
   }
@@ -129,11 +150,11 @@ var beweegAlles = function() {
   if (vijandX === kogelVliegt){
 
     vijandhealth = vijandhealth - 1;
-    vijandX=1400
+    vijandX = 1400
     
   }
     
-//if ( vijandhealth)
+
 
 
   // kogel
@@ -144,27 +165,24 @@ var beweegAlles = function() {
     kogelY = spelerY;
   }
   if (kogelVliegt === true) {
-    kogelX = kogelX + 5;
+    kogelX = kogelX + 7;
   }
 
   if (kogelVliegt === true &&
-    kogelX > 1300) {
+    kogelX > 1400) {
     kogelVliegt = false;
   }
 
-if (kogelVliegt === true && vijandX < kogelX + 50 ){
-  if (vijandY < kogelY + 50)
-    
-  vijandhealth = vijandhealth - 1;}
+if (kogelVliegt === true && vijandX - kogelX < 26 &&
+   kogelX - vijandX < 26 &&
+   vijandY - kogelY < 26 &&
+   kogelY - vijandY < 26 ) {
+  vijandX = 1400;
+  kogelVliegt = false;
+  kogelX = 10000;
+}
 
-  if (kogelVliegt - vijandX < 26 &&
-    vijandX - kogelVliegt < 26 &&
-    kogelVliegt - vijandY < 26 &&
-    vijandY - kogelVliegt < 26) {
-    health = health - 100;
-    console.log("botsing" + aantal)
-
-  }
+  
   
 
 
@@ -186,32 +204,23 @@ var verwerkBotsing = function() {
     health = health - 100;
     console.log("botsing" + aantal)
 
-  }
-  return false;
   
 
+  
 
+  }
+  if (kogelX - vijandX < 52 &&
+    vijandX - kogelX < 26 &&
+    kogelY - vijandY < 52 &&
+    vijandY - kogelY < 26) {
+    aantal = aantal + 1 ;
+    console.log("botsing" + aantal)
 
+    drawAnemy = false;
+    //return true;
+  }
     // botsing kogel tegen vijand
-
-    if (kogelVliegt=== true &&
-        kogelX === vijandX &&
-        kogelY === vijandY){
-      kogelVliegt = false;
-    }
-        //kogelX - vijandX < 50 &&
-      //vijandX - kogelX < 50 &&
-      //kogelY - vijandY < 50 &&
-      //vijandY - kogelY < 50) {
-      //kogelVliegt = false;
-    
-
-
-
-
-
-
-
+  
 
 };
 
@@ -223,13 +232,17 @@ var tekenAlles = function() {
   //achtergrond
   background(bg);
 
-
-
+if (drawAnemy == true) {
 
   // vijand
   fill("red");
   rect(vijandX, vijandY, 50, 50);
   vijandX = vijandX - 3;
+  
+}
+
+
+  
 
 
 
@@ -262,6 +275,11 @@ var checkGameOver = function() {
     console.log("botsing" + aantal)
     return true;
   }
+  if (health === 0){
+    aantal = aantal +1;
+    console.log("health" + aantal)
+    return true;
+  }
 
 
   return false;
@@ -286,6 +304,9 @@ function setup() {
   // Kleur de achtergrond blauw, zodat je het kunt zien
   // background('blue');
 }
+
+
+
 
 /**
  * draw
@@ -312,7 +333,10 @@ function draw() {
     console.log("game over");
     textSize(50);
     fill("white");
-    text("GAME OVER, druk spatie voor start", 400, 400);
+    fill("pink");
+    rect( 0,0,1280,720);
+    fill("black");
+    text("GAME OVER, druk spatie voor uitleg", 400, 400);
     if (keyIsDown(32)) { //spatie
       spelerX = 600;
       vijandX = vijandSpawn;
@@ -320,6 +344,13 @@ function draw() {
       
       
     }
+
+    /*
+    if (spelStatus === verwerkBotsing) {
+      vijandX=vijandSpawn;
+      
+    }
+    */
     
   }
     if (spelStatus === UITLEG) {
@@ -329,7 +360,7 @@ function draw() {
       fill("black");
       rect( 0,0,1280,720);
       fill("red");
-      text("Death to all, klik op enter", 400, 400);
+      text("One sh0t One death, klik op enter", 400, 400);
       if (keyIsDown(13)){
         spelerX = 600;
         vijandX = vijandSpawn;
