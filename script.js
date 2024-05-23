@@ -1,4 +1,5 @@
-/* Game opdracht
+
+ /* Game opdracht
    Informatica - Emmauscollege Rotterdam
    Template voor een game in JavaScript met de p5 library
 
@@ -16,6 +17,7 @@ var bg = 0;
 "use strict"
 
 const KEY_SPACE = 32;
+const KEY_ENTER = 13;
 
 var aantal = 0;
 var score = 0;
@@ -23,8 +25,7 @@ var highscore = 0;
 var x = 0;
 var y = 0;
 var checkGameOver = 0;
-//var vijandspanX = 0;
-var vijandspawn=10
+var vijandspawn=10;
 
 var vijandsnelheidstart = 10;
 
@@ -70,9 +71,9 @@ var springSnelheid = 0;
 var springSnelheidStart = 4;
 var zwaartekracht = 0.2;
 
-var vijandY = floorY;
+var vijandY = 650;
 var vijandX = 1400;
-var vijandSpawn = vijandX
+var vijandSpawn = vijandX;
 
 
 var vijandspringt = false;
@@ -84,7 +85,7 @@ var score = 0;
 
 
 var health = 100;  // health van speler
-var vijandhealth = 1; // vijand health
+var vijandhealth = 10; // vijand health
 
 var kogelPlek = kogelX && kogelY;
 var kogelX = 10000;
@@ -148,6 +149,8 @@ var beweegAlles = function() {
     VijandLeven = true;
   }
   if (vijandX === kogelVliegt){
+
+
 
     vijandhealth = vijandhealth - 1;
     vijandX = 1400
@@ -214,12 +217,14 @@ var verwerkBotsing = function() {
     kogelY - vijandY < 52 &&
     vijandY - kogelY < 26) {
     aantal = aantal + 1 ;
+    score = score + 1;
     console.log("botsing" + aantal)
 
     drawAnemy = false;
+    
     //return true;
   }
-    // botsing kogel tegen vijand
+  
   
 
 };
@@ -264,7 +269,10 @@ if (drawAnemy == true) {
   // punten en health
 
   return false;
+  
 };
+
+
 var checkGameOver = function() {
 
   if (spelerX - vijandX < 52 &&
@@ -275,11 +283,7 @@ var checkGameOver = function() {
     console.log("botsing" + aantal)
     return true;
   }
-  if (health === 0){
-    aantal = aantal +1;
-    console.log("health" + aantal)
-    return true;
-  }
+ 
 
 
   return false;
@@ -299,6 +303,7 @@ function setup() {
 
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
+ 
 
 
   // Kleur de achtergrond blauw, zodat je het kunt zien
@@ -345,13 +350,6 @@ function draw() {
       
     }
 
-    /*
-    if (spelStatus === verwerkBotsing) {
-      vijandX=vijandSpawn;
-      
-    }
-    */
-    
   }
     if (spelStatus === UITLEG) {
       // teken UITLEG SCHERM scherm
@@ -369,7 +367,9 @@ function draw() {
       
       
     }
-      
+
+  
+
 
     
   }
