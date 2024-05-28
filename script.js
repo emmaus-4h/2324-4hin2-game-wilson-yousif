@@ -19,6 +19,8 @@ var bg = 0;
 const KEY_SPACE = 32;
 const KEY_ENTER = 13;
 
+
+
 var aantal = 0;
 var score = 0;
 var highscore = 0;
@@ -54,12 +56,28 @@ var spelStatus = UITLEG;
 
 var floorY = 650;
 
+var vijand2X = 20;
+var vijand2Y = 70;
+var vijand2Speed = 5;
+var vijand2Leven = true;
+
+var vijand2Y = 630;
+var vijand2X = 1600;
+var vijand2Spawn = vijand2X;
+
+
 var vijandX = 20;
 var vijandY = 70;
-var vijandWidth = 40;
-var vijandHeight = 60;
 var vijandSpeed = 5;
 var VijandLeven = true
+
+var vijandY = 630;
+var vijandX = 1400;
+var vijandSpawn = vijandX;
+
+
+var vijandspringt = false;
+var vijandsnelheid = 2;
 
 
 
@@ -71,21 +89,10 @@ var springSnelheid = 0;
 var springSnelheidStart = 4;
 var zwaartekracht = 0.2;
 
-var vijandY = 650;
-var vijandX = 1400;
-var vijandSpawn = vijandX;
 
 
-var vijandspringt = false;
-
-
-var vijandsnelheid = 2;
-var score = 0;
-
-
-
-var health = 100;  // health van speler
-var vijandhealth = 10; // vijand health
+//var health = 100;  // health van speler
+//var vijandhealth = 10; // vijand health
 
 var kogelPlek = kogelX && kogelY;
 var kogelX = 10000;
@@ -138,8 +145,9 @@ var beweegAlles = function() {
     VijandLeven = false;
   }
   
-  if (vijandhealth = 0) {
-    VijandLeven = false;
+  if (VijandLeven === false){
+    aantal = aantal -  1;
+    
   }
 
   if (VijandLeven === false && vijandX < 0) {
@@ -149,12 +157,15 @@ var beweegAlles = function() {
     VijandLeven = true;
   }
   if (vijandX === kogelVliegt){
+    vijandX = 1400;
+   
+  }
 
-
-
-    vijandhealth = vijandhealth - 1;
-    vijandX = 1400
-    
+  if (vijand2Leven === true && vijand2X < 0){
+    vijand2Leven = false;
+  }
+  if (vijand2Leven === false && vijand2X < 0){
+    vijand2X = 1400;
   }
     
 
@@ -176,15 +187,26 @@ var beweegAlles = function() {
     kogelVliegt = false;
   }
 
-if (kogelVliegt === true && vijandX - kogelX < 26 &&
+if (kogelVliegt === true && 
+  vijandX - kogelX < 26 &&
    kogelX - vijandX < 26 &&
    vijandY - kogelY < 26 &&
    kogelY - vijandY < 26 ) {
-  vijandX = 1400;
+  VijandLeven = false;
+  
   kogelVliegt = false;
   kogelX = 10000;
+
+  aantal = aantal + 1;
+  console.log("score = " + aantal)
 }
 
+  if (VijandLeven === false){
+    vijandX = 1400;
+    VijandLeven = true;
+  }
+
+  
   
   
 
@@ -204,7 +226,7 @@ var verwerkBotsing = function() {
     vijandX - spelerX < 26 &&
     spelerY - vijandY < 26 &&
     vijandY - spelerY < 26) {
-    health = health - 100;
+    
     console.log("botsing" + aantal)
 
   
@@ -217,13 +239,20 @@ var verwerkBotsing = function() {
     kogelY - vijandY < 52 &&
     vijandY - kogelY < 26) {
     aantal = aantal + 1 ;
-    score = score + 1;
+    
+    
     console.log("botsing" + aantal)
+    
+    
 
     drawAnemy = false;
+  
     
     //return true;
   }
+  
+
+    
   
   
 
@@ -234,8 +263,16 @@ var verwerkBotsing = function() {
  */
 var tekenAlles = function() {
 
-  //achtergrond
+  //achtergrondj
   background(bg);
+  fill("red")
+  ellipse( 690,85,300,100)
+  fill("yellow")
+    text("score = " + aantal, 575, 100);
+  
+ 
+
+
 
 if (drawAnemy == true) {
 
@@ -243,6 +280,10 @@ if (drawAnemy == true) {
   fill("red");
   rect(vijandX, vijandY, 50, 50);
   vijandX = vijandX - 3;
+
+  fill("blue");
+  rect(vijand2X, vijand2Y, 50, 50);
+  vijand2X = vijand2X - 3;
   
 }
 
@@ -279,12 +320,13 @@ var checkGameOver = function() {
     vijandX - spelerX < 26 &&
     spelerY - vijandY < 52 &&
     vijandY - spelerY < 26) {
-    aantal = aantal + 1 ;
-    console.log("botsing" + aantal)
     return true;
   }
  
-
+  if (aantal > highscore) {
+    highscore = aantal;
+  }
+ 
 
   return false;
 };
@@ -341,11 +383,16 @@ function draw() {
     fill("pink");
     rect( 0,0,1280,720);
     fill("black");
-    text("GAME OVER, druk spatie voor uitleg", 400, 400);
+    text(" GAME OVER ", 475, 100);
+    text(" Score ="  , 500, 400);
+    text(aantal, 725, 400)
+    
     if (keyIsDown(32)) { //spatie
       spelerX = 600;
       vijandX = vijandSpawn;
+      aantal = 0;
       spelStatus = UITLEG;
+      
       
       
     }
@@ -358,7 +405,8 @@ function draw() {
       fill("black");
       rect( 0,0,1280,720);
       fill("red");
-      text("One sh0t One death, klik op enter", 400, 400);
+      text("schiet zo veel mogelijk dingen ", 325, 150);
+      text("klik op enter = start ", 400, 250)
       if (keyIsDown(13)){
         spelerX = 600;
         vijandX = vijandSpawn;
