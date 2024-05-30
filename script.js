@@ -20,7 +20,7 @@ const KEY_SPACE = 32;
 const KEY_ENTER = 13;
 
 
-var Vijand2Leven = 3;
+
 var aantal = 0;
 var score = 0;
 var highscore = 0;
@@ -62,7 +62,7 @@ var vijand2Speed = 5;
 var vijand2Leven = true;
 
 var vijand2Y = 630;
-var vijand2X = 1500;
+var vijand2X = 1600;
 var vijand2Spawn = vijand2X;
 
 
@@ -161,16 +161,16 @@ var beweegAlles = function() {
  
 
   //vijand 2
-  if (Vijand2Leven === true && vijand2X < 0) {
-    VijandLeven = false;
+  if (vijand2Leven === true && vijand2X < 0) {
+    vijand2Leven = false;
   }
 
 
-  if (Vijand2Leven === false && vijand2X < 0) {
-    vijand2X = 1500;
+  if (vijand2Leven === false && vijand2X < 0) {
+    vijand2X = 1600;
   }
-  if (vijand2X === 1500) {
-    Vijand2Leven = true;
+  if (vijand2X === 1600) {
+    vijand2Leven = true;
   }
   
 
@@ -202,13 +202,9 @@ if (kogelVliegt === true &&
   
   kogelVliegt = false;
 
-
   aantal = aantal + 1;
   console.log("score = " + aantal)
 }
-  if (kogelVliegt === false){
-    kogelX = 10000;
-  }
 
   if (kogelVliegt === true && 
     vijand2X - kogelX < 26 &&
@@ -216,25 +212,28 @@ if (kogelVliegt === true &&
      vijand2Y - kogelY < 26 &&
      kogelY - vijand2Y < 26 ) {
     kogelVliegt = false;
-    Vijand2Leven =true;
-  
-  }
+    
 
+    aantal = aantal - 1;
+    console.log("score = " + aantal)
+  
+
+  }
+  
   if (kogelVliegt === false){
     kogelX = 10000;
   }
- 
-  
 
+ 
   if (VijandLeven === false){
     vijandX = 1400;
     VijandLeven = true;
   }
 
   //vijand 2
-  if (Vijand2Leven === false){
-    vijand2X = 1500;
-    Vijand2Leven = true;
+  if (vijand2Leven === false){
+    vijand2X = 1600;
+    vijand2Leven = true;
   }
   
   
@@ -261,14 +260,14 @@ var verwerkBotsing = function() {
 
   
   }
-
-  if (spelerX - vijandX < 26 &&
-    vijandX - spelerX < 26 &&
-    spelerY - vijandY < 26 &&
-    vijandY - spelerY < 26) {
+//vijand 2
+  if (spelerX - vijand2X < 26 &&
+    vijand2X - spelerX < 26 &&
+    spelerY - vijand2Y < 26 &&
+    vijand2Y - spelerY < 26) {
     aantal = aantal - 1;
 
-    console.log("score" + aantal)
+    console.log("botsing" + aantal)
   }
 
   
@@ -276,9 +275,12 @@ var verwerkBotsing = function() {
     vijandX - kogelX < 26 &&
     kogelY - vijandY < 52 &&
     vijandY - kogelY < 26) {
+    kogelVliegt = false;
+    VijandLeven = false;
+
     aantal = aantal + 1 ;
-    
-    console.log("botsing" + aantal)
+    console.log("score = " + aantal)
+    console.log("botsing = " + aantal)
     
     
 
@@ -287,11 +289,19 @@ var verwerkBotsing = function() {
     
     //return true;
   }
+
+  
     if (kogelX - vijand2X < 52 &&
       vijand2X - kogelX < 26 &&
       kogelY - vijand2Y < 52 &&
       vijand2Y - kogelY < 26) {
-      aantal = aantal - 1 ;
+
+      kogelVliegt = false;
+      aantal = aantal - 1;
+      
+
+
+      drawAnemy = false;
     }
 
     
@@ -316,7 +326,7 @@ var tekenAlles = function() {
 
 
 
-if (drawAnemy == true) {
+if (drawAnemy === true) {
 
   // vijand
   fill("red");
@@ -368,6 +378,7 @@ var checkGameOver = function() {
   if (aantal > highscore) {
     highscore = aantal;
   }
+  //vijand 2
   if (spelerX - vijand2X < 52 &&
     vijand2X - spelerX < 26 &&
     spelerY - vijand2Y < 52 &&
