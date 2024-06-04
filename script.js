@@ -12,7 +12,7 @@
  */
 ///<reference path="p5.global-mode.d.ts" />
 ///<reference path="p5.d.ts" />
-var img; // plaatje speler
+var tank; // plaatje speler
 var bg = 0;
 
 "use strict"
@@ -123,6 +123,11 @@ var kogelVliegt = false;
 /**
  * Updatet globale variabelen met posities van speler, vijanden en kogels
  */
+function preload() {
+  tank = loadImage("/tank.png")
+}
+
+
 var beweegAlles = function() {
   // speler
   if (keyIsDown(68)) {
@@ -373,10 +378,7 @@ if (drawAnemy === true) {
   image (img,  0,  0);
 
   // speler
-  fill("white");
-  rect(spelerX - 25, spelerY - 25, 50, 50);
-  fill("black");
-  ellipse(spelerX, spelerY, 10, 10);
+  image(tank, spelerX - 25, spelerY - 25, 50, 50)
 
   // punten en health
 
@@ -419,7 +421,6 @@ var checkGameOver = function() {
  * de p5 library, zodra het spel geladen is in de browser
  */
 function setup() {
-  img = loadImage('speler.jpeg'); // speler
   bg = loadImage('City2_pale.png');
 
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
