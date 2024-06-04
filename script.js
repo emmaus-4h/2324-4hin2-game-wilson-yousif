@@ -327,7 +327,7 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-  image (img, spelerX, spelerY, 100, 100)
+ 
   //achtergrond
   background(bg);
   fill("red");
