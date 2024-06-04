@@ -12,6 +12,7 @@
  */
 ///<reference path="p5.global-mode.d.ts" />
 ///<reference path="p5.d.ts" />
+var img; // plaatje speler
 var bg = 0;
 
 "use strict"
@@ -32,6 +33,7 @@ var vijandspawn=10;
 var vijandsnelheidstart = 10;
 
 var drawAnemy = true;
+var drawAnemy2 = true;
 
 
 
@@ -56,28 +58,38 @@ var spelStatus = UITLEG;
 
 var floorY = 650;
 
-var vijand2X = 20;
-var vijand2Y = 70;
-var vijand2Speed = 5;
+var vijand3leven = false;
+var vijand3Speed = 4;
+var vijand3X = 635;
+var vijand3Y = 1700;
+var vijand3Spawn = vijand3X;
+
+
+
+
+
+//var vijand2X = 20;
+//var vijand2Y = 70;
+var vijand2Speed = 3;
 var vijand2Leven = true;
 
-var vijand2Y = 630;
+var vijand2Y = 635;
 var vijand2X = 1600;
 var vijand2Spawn = vijand2X;
 
 
-var vijandX = 20;
-var vijandY = 70;
+//var vijandX = 20;
+//var vijandY = 70;
 var vijandSpeed = 5;
 var VijandLeven = true
 
-var vijandY = 630;
+var vijandY = 635;
 var vijandX = 1400;
 var vijandSpawn = vijandX;
 
 
-var vijandspringt = false;
-var vijandsnelheid = 2;
+
+
 
 
 
@@ -121,7 +133,7 @@ var beweegAlles = function() {
     spelerX = spelerX - 3;
 
   }
-
+img = loadImage('speler.jpeg'); // speler
   
 
   if (spelerSpringt === false && keyIsDown(KEY_SPACE)) {
@@ -169,9 +181,18 @@ var beweegAlles = function() {
   if (vijand2Leven === false && vijand2X < 0) {
     vijand2X = 1600;
   }
+  
   if (vijand2X === 1600) {
     vijand2Leven = true;
   }
+
+
+  
+
+
+  
+  
+
   
 
 
@@ -213,7 +234,6 @@ if (kogelVliegt === true &&
      kogelY - vijand2Y < 26 ) {
     kogelVliegt = false;
     
-
     aantal = aantal - 1;
     console.log("score = " + aantal)
   
@@ -221,7 +241,7 @@ if (kogelVliegt === true &&
   }
   
   if (kogelVliegt === false){
-    kogelX = 10000;
+    kogelX = kogelPlek;
   }
 
  
@@ -231,14 +251,7 @@ if (kogelVliegt === true &&
   }
 
   //vijand 2
-  if (vijand2Leven === false){
-    vijand2X = 1600;
-    vijand2Leven = true;
-  }
   
-  
-  
-
 
 
 };
@@ -270,10 +283,10 @@ var verwerkBotsing = function() {
     console.log("botsing" + aantal)
   }
 
-  
-  if (kogelX - vijandX < 52 &&
+  //vijand
+  if (kogelX - vijandX < 26 &&
     vijandX - kogelX < 26 &&
-    kogelY - vijandY < 52 &&
+    kogelY - vijandY < 26 &&
     vijandY - kogelY < 26) {
     kogelVliegt = false;
     VijandLeven = false;
@@ -287,13 +300,13 @@ var verwerkBotsing = function() {
     drawAnemy = false;
   
     
-    //return true;
+   
   }
 
   
-    if (kogelX - vijand2X < 52 &&
+    if (kogelX - vijand2X < 26 &&
       vijand2X - kogelX < 26 &&
-      kogelY - vijand2Y < 52 &&
+      kogelY - vijand2Y < 26 &&
       vijand2Y - kogelY < 26) {
 
       kogelVliegt = false;
@@ -301,7 +314,7 @@ var verwerkBotsing = function() {
       
 
 
-      drawAnemy = false;
+      drawAnemy2 = false;
     }
 
     
@@ -314,12 +327,12 @@ var verwerkBotsing = function() {
  * Tekent spelscherm
  */
 var tekenAlles = function() {
-
-  //achtergrondj
+  image (img, spelerX, spelerY, 100, 100)
+  //achtergrond
   background(bg);
-  fill("red")
-  ellipse( 690,85,300,100)
-  fill("yellow")
+  fill("red");
+  ellipse( 690,85,300,100);
+  fill("yellow");
     text("score = " + aantal, 575, 100);
   
  
@@ -331,15 +344,19 @@ if (drawAnemy === true) {
   // vijand
   fill("red");
   rect(vijandX, vijandY, 50, 50);
-  vijandX = vijandX - 3;
+  vijandX = vijandX - vijandSpeed;
 
   fill("blue");
   rect(vijand2X, vijand2Y, 50, 50);
-  vijand2X = vijand2X - 3;
+  vijand2X = vijand2X - vijand2Speed;
+
+ 
   
 }
 
-
+  fill("purple")
+  rect(vijand3X, vijand3Y, 50, 50)
+  vijand3X = vijand3X - vijand3Speed;
   
 
 
@@ -352,6 +369,8 @@ if (drawAnemy === true) {
 
 
 
+
+  image (img,  0,  0);
 
   // speler
   fill("white");
@@ -400,6 +419,7 @@ var checkGameOver = function() {
  * de p5 library, zodra het spel geladen is in de browser
  */
 function setup() {
+  img = loadImage('speler.jpeg'); // speler
   bg = loadImage('City2_pale.png');
 
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
@@ -445,10 +465,13 @@ function draw() {
     text(" GAME OVER ", 475, 100);
     text(" Score ="  , 500, 400);
     text(aantal, 725, 400)
+    text("highscore = ", 500, 500)
+    text(highscore, 825, 500)
     
     if (keyIsDown(32)) { //spatie
       spelerX = 600;
       vijandX = vijandSpawn;
+      vijand2X = vijand2Spawn;
       aantal = 0;
       spelStatus = UITLEG;
       
@@ -469,6 +492,7 @@ function draw() {
       if (keyIsDown(13)){
         spelerX = 600;
         vijandX = vijandSpawn;
+        vijand2X = vijand2Spawn;
         spelStatus = SPELEN;
       }
       
