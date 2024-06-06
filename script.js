@@ -16,7 +16,7 @@ var tank; // plaatje speler
 var bg = 0;
 var blue;
 "use strict"
-
+var slecht;
 const KEY_SPACE = 32;
 const KEY_ENTER = 13;
 
@@ -125,6 +125,7 @@ var kogelVliegt = false;
 function preload() {
   tank = loadImage("/tank.png")
   blue = loadImage("/blue.png")
+  slecht = loadImage("/slecht.png")
 }
 
 
@@ -354,8 +355,7 @@ var tekenAlles = function() {
 if (drawAnemy === true) {
 
   // vijand
-  fill("red");
-  rect(vijandX, vijandY, 50, 50);
+  image(slecht, vijandX, vijandY, 100, 100);
   vijandX = vijandX - vijandSpeed;
 }
 
