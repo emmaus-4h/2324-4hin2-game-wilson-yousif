@@ -14,7 +14,7 @@
 ///<reference path="p5.d.ts" />
 var tank; // plaatje speler
 var bg = 0;
-
+var blue;
 "use strict"
 
 const KEY_SPACE = 32;
@@ -63,7 +63,6 @@ var vijand3Speed = 4;
 var vijand3X = 635;
 var vijand3Y = 1700;
 var vijand3Spawn = vijand3X;
-
 
 
 
@@ -125,6 +124,7 @@ var kogelVliegt = false;
  */
 function preload() {
   tank = loadImage("/tank.png")
+  blue = loadImage("/blue.png")
 }
 
 
@@ -191,6 +191,13 @@ img = loadImage('speler.jpeg'); // speler
     vijand2Leven = true;
   }
 
+  if (vijand3leven === false && aantal === 5){
+    vijand3leven = true;
+    
+  }
+  if (vijand3leven === true && vijand3X < 0){
+    vijand3X = 1500;
+  }
 
   
 
@@ -350,9 +357,10 @@ if (drawAnemy === true) {
   fill("red");
   rect(vijandX, vijandY, 50, 50);
   vijandX = vijandX - vijandSpeed;
+}
 
-  fill("blue");
-  rect(vijand2X, vijand2Y, 50, 50);
+  if (drawAnemy2 === true){
+  image(blue, vijandX, vijandY, 50, 50);
   vijand2X = vijand2X - vijand2Speed;
 
  
@@ -361,7 +369,9 @@ if (drawAnemy === true) {
 
   fill("purple")
   rect(vijand3X, vijand3Y, 50, 50)
+  if (vijand3leven === true){
   vijand3X = vijand3X - vijand3Speed;
+  }
   
 
 
@@ -473,6 +483,7 @@ function draw() {
       spelerX = 600;
       vijandX = vijandSpawn;
       vijand2X = vijand2Spawn;
+      vijand3X = vijand3Spawn;
       aantal = 0;
       spelStatus = UITLEG;
       
@@ -494,6 +505,7 @@ function draw() {
         spelerX = 600;
         vijandX = vijandSpawn;
         vijand2X = vijand2Spawn;
+        vijand3X = vijand3Spawn;
         spelStatus = SPELEN;
       }
       
