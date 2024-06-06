@@ -28,9 +28,7 @@ var highscore = 0;
 var x = 0;
 var y = 0;
 var checkGameOver = 0;
-var vijandspawn=10;
 
-var vijandsnelheidstart = 10;
 
 var drawAnemy = true;
 var drawAnemy2 = true;
@@ -50,6 +48,7 @@ const SPELEN = 1;
 const GAMEOVER = 2;
 
 const UITLEG = 3;
+
 var spelStatus = UITLEG;
 
 
@@ -60,7 +59,7 @@ var floorY = 650;
 
 var vijand3leven = false;
 var vijand3Speed = 4;
-var vijand3X = 635;
+var vijand3X = 640;
 var vijand3Y = 1700;
 var vijand3Spawn = vijand3X;
 
@@ -71,8 +70,7 @@ var vijand3Spawn = vijand3X;
 //var vijand2Y = 70;
 var vijand2Speed = 3;
 var vijand2Leven = true;
-
-var vijand2Y = 635;
+var vijand2Y = 640;
 var vijand2X = 1600;
 var vijand2Spawn = vijand2X;
 
@@ -80,9 +78,9 @@ var vijand2Spawn = vijand2X;
 //var vijandX = 20;
 //var vijandY = 70;
 var vijandSpeed = 5;
-var VijandLeven = true
+var VijandLeven = true;
 
-var vijandY = 635;
+var vijandY = 640;
 var vijandX = 1400;
 var vijandSpawn = vijandX;
 
