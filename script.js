@@ -32,7 +32,8 @@ var checkGameOver = 0;
 
 var drawAnemy = true;
 var drawAnemy2 = true;
-var drawAnemy3 = false;
+var drawAnemy3 = true;
+var drawAnemy4 = true;
 
 
 
@@ -57,7 +58,7 @@ var spelStatus = UITLEG;
 
 
 var vijand3leven = true;
-var vijand3Speed = 4;
+var vijand3Speed = 7;
 var vijand3Y = 640;
 var vijand3X = 1700;
 var vijand3Spawn = vijand3X;
@@ -74,9 +75,16 @@ var vijand2X = 1600;
 var vijand2Spawn = vijand2X;
 
 
+//vijand4 
+var vijand4Speed = 4;
+var vijand4Leven = true;
+var vijand4Y = 640;
+var vijand4X = 1800;
+var vijand4Spawn = vijand4X;
+
 //var vijandX = 20;
 //var vijandY = 70;
-var vijandSpeed = 5;
+var vijandSpeed = 6;
 var VijandLeven = true;
 
 var vijandY = 640;
@@ -136,7 +144,7 @@ var beweegAlles = function() {
     spelerX = spelerX - 3;
 
   }
-//img = loadImage('speler.jpeg'); // speler
+  //img = loadImage('speler.jpeg'); // speler
 
 
   if (spelerSpringt === false && keyIsDown(KEY_SPACE)) {
@@ -189,28 +197,39 @@ var beweegAlles = function() {
     vijand2Leven = true;
   }
 
-  
-//vijand 3
-  
-  if (vijand3leven=== true && vijand3X < 0) {
-    vijand3leven = false;
+
+  //vijand 3
+
+  if (VijandLeven === true && vijandX < 0) {
+    VijandLeven = false;
   }
 
-  if (vijand3leven === false && vijand3X < 0) {
-    vijand3X = 1400;
+  if (VijandLeven === false && vijandX < 0) {
+    vijandX = 1400;
     aantal = aantal - 1;
 
   }
 
-  if (vijand3X === 1400) {
-    vijand3leven = true;
+  if (vijandX === 1900) {
+    VijandLeven = true;
   }
 
-  
 
 
+  //vijand 4
+
+  if (vijand4Leven === true && vijand4X < 0) {
+    vijand4Leven = false;
+  }
 
 
+  if (vijand4Leven === false && vijand4X < 0) {
+    vijand4X = 1800;
+  }
+
+  if (vijand4X === 1800) {
+    vijand4Leven = true;
+  }
 
 
 
@@ -260,7 +279,7 @@ var beweegAlles = function() {
 
 
   }
-  
+
   if (kogelVliegt === true &&
     vijand3X - kogelX < 26 &&
     kogelX - vijand3X < 26 &&
@@ -269,11 +288,25 @@ var beweegAlles = function() {
     kogelVliegt = false;
     vijand3leven = false;
 
+    aantal = aantal + 1;
+    console.log("score = " + aantal)
+
+
+  }
+  if (kogelVliegt === true &&
+    vijand4X - kogelX < 26 &&
+    kogelX - vijand4X < 26 &&
+    vijand4Y - kogelY < 26 &&
+    kogelY - vijand4Y < 26) {
+    kogelVliegt = false;
+
     aantal = aantal - 1;
     console.log("score = " + aantal)
 
 
   }
+
+  //positie
   if (kogelVliegt === false) {
     kogelX = kogelPlek;
   }
@@ -285,11 +318,11 @@ var beweegAlles = function() {
   }
 
   if (vijand3leven === false) {
-    vijand3X = 1400;
+    vijand3X = 1700;
     vijand3leven = true;
   }
 
- 
+
 
 
 
@@ -326,11 +359,21 @@ var verwerkBotsing = function() {
     vijand3X - spelerX < 26 &&
     spelerY - vijand3Y < 26 &&
     vijand3Y - spelerY < 26) {
-
+    
     console.log("botsing" + aantal)
 
 
   }
+  // vijand 4
+  if (spelerX - vijand4X < 26 &&
+    vijand4X - spelerX < 26 &&
+    spelerY - vijand4Y < 26 &&
+    vijand4Y - spelerY < 26) {
+    aantal = aantal - 1;
+
+    console.log("botsing" + aantal)
+  }
+
 
   //vijand
   if (kogelX - vijandX < 26 &&
@@ -344,11 +387,7 @@ var verwerkBotsing = function() {
     console.log("score = " + aantal)
     console.log("botsing = " + aantal)
 
-
-
     drawAnemy = false;
-
-
 
   }
 
@@ -361,11 +400,10 @@ var verwerkBotsing = function() {
     kogelVliegt = false;
     aantal = aantal - 1;
 
-
-
     drawAnemy2 = false;
   }
-  
+
+
   if (kogelX - vijand3X < 26 &&
     vijand3X - kogelX < 26 &&
     kogelY - vijand3Y < 26 &&
@@ -384,7 +422,16 @@ var verwerkBotsing = function() {
 
 
   }
+  if (kogelX - vijand4X < 26 &&
+    vijand4X - kogelX < 26 &&
+    kogelY - vijand4Y < 26 &&
+    vijand4Y - kogelY < 26) {
 
+    kogelVliegt = false;
+    aantal = aantal - 1;
+
+    drawAnemy4 = false;
+  }
 
 
 
@@ -410,29 +457,34 @@ var tekenAlles = function() {
 
     // vijand
     image(slecht, vijandX - 25, vijandY - 25);
-    slecht.resize(200,0);
+    slecht.resize(200, 0);
     vijandX = vijandX - vijandSpeed;
   }
 
   if (drawAnemy2 === true) {
-    
-    image(blue, vijand2X -25, vijand2Y -25);
+
+    image(blue, vijand2X - 25, vijand2Y - 25);
     blue.resize(180, 0);
-    
+
     vijand2X = vijand2X - vijand2Speed;
-
-
-
   }
 
-  if (drawAnemy3 === true){
-  rect(vijand3X, vijand3Y, 50, 50)
-  fill("purple")
-   vijand3X = vijand3X - vijand3Speed;
+  if (drawAnemy3 === true) {
+    
+    // vijand
+    image(slecht, vijand3X - 25, vijand3Y - 25);
+    slecht.resize(200, 0);
+    vijand3X = vijand3X - vijand3Speed;
   }
-  
 
+  if (drawAnemy4 === true) {
 
+    image(blue, vijand4X - 25, vijand4Y - 25);
+    blue.resize(180, 0);
+
+    vijand4X = vijand4X - vijand4Speed;
+
+  }
 
 
 
@@ -449,7 +501,7 @@ var tekenAlles = function() {
 
   // speler
   image(tank, spelerX - 25, spelerY - 25,)
-  tank.resize(150,0);
+  tank.resize(150, 0);
 
   // punten en health
 
@@ -478,14 +530,22 @@ var checkGameOver = function() {
     vijand2Y - spelerY < 26) {
     return true;
   }
-
+  //vijand 3
   if (spelerX - vijand3X < 52 &&
     vijand3X - spelerX < 26 &&
     spelerY - vijand3Y < 52 &&
     vijand3Y - spelerY < 26) {
     return true;
   }
-  
+  //vijand 4
+  if (spelerX - vijand4X < 52 &&
+    vijand4X - spelerX < 26 &&
+    spelerY - vijand4Y < 52 &&
+    vijand4Y - spelerY < 26) {
+    return true;
+  }
+
+
 
 
   return false;
@@ -553,7 +613,10 @@ function draw() {
       spelerX = 600;
       vijandX = vijandSpawn;
       vijand2X = vijand2Spawn;
-      
+      vijand3X = vijand3Spawn
+;
+      vijand4X = vijand4Spawn;
+      kogelVliegt = false;
 
       aantal = 0;
       spelStatus = UITLEG;
@@ -576,7 +639,12 @@ function draw() {
       spelerX = 600;
       vijandX = vijandSpawn;
       vijand2X = vijand2Spawn;
+      vijand3X = vijand3Spawn;
+      vijand4X = vijand4Spawn;
+      
       spelStatus = SPELEN;
+
+
     }
 
 
@@ -586,5 +654,4 @@ function draw() {
 
 
 
-}
-
+};
