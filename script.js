@@ -55,10 +55,29 @@ var spelStatus = UITLEG;
 
 
 
+//vijand1
+var vijandSpeed = 10;
+var VijandLeven = true;
+
+var vijandY = 640;
+var vijandX = 1400;
+var vijandSpawn = vijandX;
 
 
+
+
+
+
+//vijand2
+var vijand2Speed = 7;
+var vijand2Leven = true;
+var vijand2Y = 640;
+var vijand2X = 1600;
+var vijand2Spawn = vijand2X;
+
+//vijand3
 var vijand3leven = true;
-var vijand3Speed = 7;
+var vijand3Speed = 13;
 var vijand3Y = 640;
 var vijand3X = 1700;
 var vijand3Spawn = vijand3X;
@@ -66,31 +85,12 @@ var vijand3Spawn = vijand3X;
 
 
 
-//var vijand2X = 20;
-//var vijand2Y = 70;
-var vijand2Speed = 3;
-var vijand2Leven = true;
-var vijand2Y = 640;
-var vijand2X = 1600;
-var vijand2Spawn = vijand2X;
-
-
 //vijand4 
-var vijand4Speed = 4;
+var vijand4Speed = 9;
 var vijand4Leven = true;
 var vijand4Y = 640;
 var vijand4X = 1800;
 var vijand4Spawn = vijand4X;
-
-//var vijandX = 20;
-//var vijandY = 70;
-var vijandSpeed = 6;
-var VijandLeven = true;
-
-var vijandY = 640;
-var vijandX = 1400;
-var vijandSpawn = vijandX;
-
 
 
 
@@ -114,7 +114,7 @@ var kogelPlek = kogelX && kogelY;
 var kogelX = 10000;
 var kogelY = 10000;
 var kogelVliegt = false;
-
+var kogelSpeed = 10;
 
 
 
@@ -246,7 +246,7 @@ var beweegAlles = function() {
     kogelY = spelerY;
   }
   if (kogelVliegt === true) {
-    kogelX = kogelX + 7;
+    kogelX = kogelX + kogelSpeed;
   }
 
   if (kogelVliegt === true &&
@@ -602,18 +602,18 @@ function draw() {
 
     // teken game-over scherm
     console.log("game over");
+    textSize(100);
+  fill("white"); 
+    text(" GAME OVER ", 350, 150);
     textSize(50);
-    //fill("white");
-    rect(0, 0, 1280, 720);
-    //fill("black"); 
-    text(" GAME OVER ", 475, 100);
+    fill("white");
     text(" Score =", 500, 400);
     text(aantal, 725, 400)
     text("highscore = ", 500, 500)
     text(highscore, 825, 500)
-    
+    text("Uitleg = P", 550, 600)
 
-    if (keyIsDown(32)) { //spatie
+    if (keyIsDown(80)) { //p
       spelerX = 600;
       vijandX = vijandSpawn;
       vijand2X = vijand2Spawn;
@@ -633,10 +633,9 @@ function draw() {
     // teken UITLEG SCHERM scherm
     console.log("uitleg");
     textSize(50);
-    fill("pink");
-    rect(0, 0, 1280, 720);
-    fill("purple");
-    text("Schiet zo veel mogelijk dingen ", 325, 150);
+    background (bg);
+    fill("white");
+    text("Schiet de tanks. GEEN auto's", 325, 150);
     text("Start = Enter", 550, 250)
     text("controls: ", 550, 400)
     text(" A & D = bewegen ", 450, 500)
