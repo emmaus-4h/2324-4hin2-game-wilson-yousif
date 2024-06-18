@@ -14,7 +14,7 @@
 ///<reference path="p5.d.ts" />
 "use strict"
 var tank; // plaatje speler
-var bg = 0;
+var bg; // achtergrond;
 var blue;
 var slecht;
 const KEY_SPACE = 32;
@@ -128,9 +128,10 @@ var kogelVliegt = false;
  * Updatet globale variabelen met posities van speler, vijanden en kogels
  */
 function preload() {
-  tank = loadImage("tank.png")
-  blue = loadImage("blue.png")
-  slecht = loadImage("slecht.png")
+  tank = loadImage("tank.png");
+  blue = loadImage("blue.png");
+  slecht = loadImage("slecht.png");
+  bg = loadImage("City2_pale.png");
 }
 
 
@@ -164,11 +165,11 @@ var beweegAlles = function() {
 
 
   // vijand
-  if (VijandLeven === true && vijandX < 0) {
+  if (VijandLeven === true && vijandX < -100) {
     VijandLeven = false;
   }
 
-  if (VijandLeven === false && vijandX < 0) {
+  if (VijandLeven === false && vijandX < -100) {
     vijandX = 1400;
     aantal = aantal - 1;
 
@@ -184,12 +185,12 @@ var beweegAlles = function() {
 
 
   //vijand 2
-  if (vijand2Leven === true && vijand2X < 0) {
+  if (vijand2Leven === true && vijand2X < -100) {
     vijand2Leven = false;
   }
 
 
-  if (vijand2Leven === false && vijand2X < 0) {
+  if (vijand2Leven === false && vijand2X < -100) {
     vijand2X = 1600;
   }
 
@@ -200,11 +201,11 @@ var beweegAlles = function() {
 
   //vijand 3
 
-  if (vijand3leven === true && vijand3X < 0) {
+  if (vijand3leven === true && vijand3X < -100) {
     vijand3leven = false;
   }
 
-  if (vijand3leven === false && vijand3X < 0) {
+  if (vijand3leven === false && vijand3X < -100) {
     vijand3X = 1400;
     aantal = aantal - 1;
 
@@ -562,7 +563,7 @@ var checkGameOver = function() {
  * de p5 library, zodra het spel geladen is in de browser
  */
 function setup() {
-  bg = loadImage('City2_pale.png');
+  
 
   // Maak een canvas (rechthoek) waarin je je speelveld kunt tekenen
   createCanvas(1280, 720);
@@ -582,7 +583,7 @@ function setup() {
  * uitgevoerd door de p5 library, nadat de setup functie klaar is
  */
 function draw() {
-  //bg=loadImage('City2_pale.png');
+  
   if (spelStatus === SPELEN) {
     beweegAlles();
     verwerkBotsing();
@@ -597,18 +598,20 @@ function draw() {
 
   if (spelStatus === GAMEOVER) {
 
+    background(bg);
+
     // teken game-over scherm
     console.log("game over");
     textSize(50);
-    fill("white");
-    fill("pink");
+    //fill("white");
     rect(0, 0, 1280, 720);
-    fill("black");
+    //fill("black"); 
     text(" GAME OVER ", 475, 100);
     text(" Score =", 500, 400);
     text(aantal, 725, 400)
     text("highscore = ", 500, 500)
     text(highscore, 825, 500)
+    
 
     if (keyIsDown(32)) { //spatie
       spelerX = 600;
@@ -630,11 +633,16 @@ function draw() {
     // teken UITLEG SCHERM scherm
     console.log("uitleg");
     textSize(50);
-    fill("black");
+    fill("pink");
     rect(0, 0, 1280, 720);
-    fill("red");
-    text("schiet zo veel mogelijk dingen ", 325, 150);
-    text("klik op enter = start ", 400, 250)
+    fill("purple");
+    text("Schiet zo veel mogelijk dingen ", 325, 150);
+    text("Start = Enter", 550, 250)
+    text("controls: ", 550, 400)
+    text(" A & D = bewegen ", 450, 500)
+    text("Spatie = jump     J = shoot", 400, 600)
+    
+    
     if (keyIsDown(13)) {
       spelerX = 600;
       vijandX = vijandSpawn;
