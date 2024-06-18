@@ -200,18 +200,18 @@ var beweegAlles = function() {
 
   //vijand 3
 
-  if (VijandLeven === true && vijandX < 0) {
-    VijandLeven = false;
+  if (vijand3leven === true && vijand3X < 0) {
+    vijand3leven = false;
   }
 
-  if (VijandLeven === false && vijandX < 0) {
-    vijandX = 1400;
+  if (vijand3leven === false && vijand3X < 0) {
+    vijand3X = 1400;
     aantal = aantal - 1;
 
   }
 
-  if (vijandX === 1900) {
-    VijandLeven = true;
+  if (vijand3X === 1900) {
+    vijand3leven = true;
   }
 
 
@@ -252,7 +252,7 @@ var beweegAlles = function() {
     kogelX > 1400) {
     kogelVliegt = false;
   }
-
+//vijand 1
   if (kogelVliegt === true &&
     vijandX - kogelX < 26 &&
     kogelX - vijandX < 26 &&
@@ -266,6 +266,7 @@ var beweegAlles = function() {
     aantal = aantal + 1;
     console.log("score = " + aantal)
   }
+  //vijand2
 
   if (kogelVliegt === true &&
     vijand2X - kogelX < 26 &&
@@ -277,7 +278,7 @@ var beweegAlles = function() {
     aantal = aantal - 1;
     console.log("score = " + aantal)
 
-
+//vijand3
   }
 
   if (kogelVliegt === true &&
@@ -291,7 +292,7 @@ var beweegAlles = function() {
     aantal = aantal + 1;
     console.log("score = " + aantal)
 
-
+//vijand4
   }
   if (kogelVliegt === true &&
     vijand4X - kogelX < 26 &&
@@ -310,13 +311,14 @@ var beweegAlles = function() {
   if (kogelVliegt === false) {
     kogelX = kogelPlek;
   }
-
+//vijand 1
 
   if (VijandLeven === false) {
     vijandX = 1400;
     VijandLeven = true;
   }
 
+  //vijand 3
   if (vijand3leven === false) {
     vijand3X = 1700;
     vijand3leven = true;
@@ -345,7 +347,7 @@ var verwerkBotsing = function() {
 
 
   }
-  //vijand 2
+  //botsing speler tegen vijand2
   if (spelerX - vijand2X < 26 &&
     vijand2X - spelerX < 26 &&
     spelerY - vijand2Y < 26 &&
@@ -355,6 +357,7 @@ var verwerkBotsing = function() {
     console.log("botsing" + aantal)
   }
 
+  //botsing speler tegen vijand3
   if (spelerX - vijand3X < 26 &&
     vijand3X - spelerX < 26 &&
     spelerY - vijand3Y < 26 &&
@@ -364,7 +367,7 @@ var verwerkBotsing = function() {
 
 
   }
-  // vijand 4
+  // botsing speler tegen vijand 4
   if (spelerX - vijand4X < 26 &&
     vijand4X - spelerX < 26 &&
     spelerY - vijand4Y < 26 &&
@@ -375,7 +378,7 @@ var verwerkBotsing = function() {
   }
 
 
-  //vijand
+  //botsing tussen kogel en vijand
   if (kogelX - vijandX < 26 &&
     vijandX - kogelX < 26 &&
     kogelY - vijandY < 26 &&
@@ -391,7 +394,7 @@ var verwerkBotsing = function() {
 
   }
 
-
+  //botsing tussen kogel en vijand2
   if (kogelX - vijand2X < 26 &&
     vijand2X - kogelX < 26 &&
     kogelY - vijand2Y < 26 &&
@@ -403,7 +406,7 @@ var verwerkBotsing = function() {
     drawAnemy2 = false;
   }
 
-
+  //botsing tussen kogel en vijand3
   if (kogelX - vijand3X < 26 &&
     vijand3X - kogelX < 26 &&
     kogelY - vijand3Y < 26 &&
@@ -415,13 +418,11 @@ var verwerkBotsing = function() {
     console.log("score = " + aantal)
     console.log("botsing = " + aantal)
 
-
-
     drawAnemy3 = false;
 
-
-
   }
+
+  //botsing tussen kogel en vijand4
   if (kogelX - vijand4X < 26 &&
     vijand4X - kogelX < 26 &&
     kogelY - vijand4Y < 26 &&
@@ -471,7 +472,7 @@ var tekenAlles = function() {
 
   if (drawAnemy3 === true) {
     
-    // vijand
+    // vijand3
     image(slecht, vijand3X - 25, vijand3Y - 25);
     slecht.resize(200, 0);
     vijand3X = vijand3X - vijand3Speed;
@@ -512,7 +513,7 @@ var tekenAlles = function() {
 
 
 var checkGameOver = function() {
-
+//vijand
   if (spelerX - vijandX < 52 &&
     vijandX - spelerX < 26 &&
     spelerY - vijandY < 52 &&
@@ -613,8 +614,7 @@ function draw() {
       spelerX = 600;
       vijandX = vijandSpawn;
       vijand2X = vijand2Spawn;
-      vijand3X = vijand3Spawn
-;
+      vijand3X = vijand3Spawn;
       vijand4X = vijand4Spawn;
       kogelVliegt = false;
 
